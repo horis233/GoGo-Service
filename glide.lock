@@ -1,0 +1,12 @@
+hash: a943ca7d7678b33129e955881bbb989d6e5b62626d54541936d69b3e53b2b985
+updated: 2019-02-18T16:23:00.650916-05:00
+imports:
+- name: github.com/google/uuid
+  version: 9b3b1e0f5f99ae461456d768e7d301a7acdaa2d8
+- name: github.com/gorilla/mux
+  version: a7962380ca08b5a188038c69871b8d3fbdf31e89
+- name: github.com/unrolled/render
+  version: 449f3985007486f7f42ca7f62b4c8b45d6d89cbf
+- name: github.com/urfave/negroni
+  version: c6a59be0ce122566695fbd5e48a77f8f10c8a63a
+testImports: []

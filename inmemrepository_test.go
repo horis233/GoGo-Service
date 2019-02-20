@@ -7,7 +7,7 @@ import (
 )
 
 func TestAddMatchShowsUpInRepository(t *testing.T) {
-	match := gogo.NewMatch(19)
+	match := gogo.NewMatch(19, "Black", "White")
 
 	repo := newInMemoryRepository()
 	err := repo.addMatch(match)

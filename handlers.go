@@ -18,7 +18,7 @@ func createMatchHandler(formatter *render.Render, repo matchRepository) http.Han
 		var newMatchRequest newMatchRequest
 		json.Unmarshal(payload, &newMatchRequest)
 
-		newMatch := gogo.NewMatch(newMatchRequest.GridSize)		
+		newMatch := gogo.NewMatch(newMatchRequest.GridSize,"Black","White")		
 		repo.addMatch(newMatch)
 		guid := uuid.New()
 		w.Header().Add("Location", "/matches/"+guid.String())

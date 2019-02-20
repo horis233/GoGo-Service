@@ -8,3 +8,4 @@ import:
   version: ^1.0.0
 - package: github.com/urfave/negroni
   version: ^1.0.0
+- package: github.com/cloudnativego/gogo-engine

@@ -38,16 +38,8 @@ func TestCreateMatch(t *testing.T) {
 	req.Header.Add("Content-Type", "application/json")
 
 	res, err := client.Do(req)
-	loc := res.Header["Location"]
-	if loc == nil {
+	if err != nil {
 		t.Errorf("Error in POST to createMatchHandler: %v", err)
-	} else {
-		if !strings.Contains(loc[0], "/matches/") {
-			t.Errorf("Location header should contain '/matches/'")
-		}
-		if len(loc[0]) != len(fakeMatchLocationResult) {
-			t.Errorf("Location value does not contain guid of new match")
-		}
 	}
 
 	defer res.Body.Close()
@@ -61,8 +53,16 @@ func TestCreateMatch(t *testing.T) {
 		t.Errorf("Expected response status 201, received %s", res.Status)
 	}
 
-	if res.Header["Location"] == nil {
+	loc := res.Header["Location"]
+	if loc == nil {
 		t.Error("Location header is not set")
+	} else {
+		if !strings.Contains(loc[0], "/matches/") {
+			t.Errorf("Location header should contain '/matches/'")
+		}
+		if len(loc[0]) != len(fakeMatchLocationResult) {
+			t.Errorf("Location value does not contain guid of new match")
+		}
 	}
 
 	var matchResponse newMatchResponse
@@ -86,7 +86,7 @@ func TestCreateMatch(t *testing.T) {
 	if match.GridSize != matchResponse.GridSize {
 		t.Errorf("Expected repo match and HTTP response gridsize to match. Got %d and %d", match.GridSize, matchResponse.GridSize)
 	}
-	
+
 	if len(matchResponse.Players) != 2 {
 		t.Errorf("Match response from server should indicate two players, got %d", len(matchResponse.Players))
 	}

@@ -1,9 +1,0 @@
-box: alpine
-
-build:
-  steps:
-
-publish:
-  steps:
-    - internal/publish-step:
-        owner: wercker

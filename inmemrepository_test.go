@@ -19,12 +19,7 @@ func TestAddMatchShowsUpInRepository(t *testing.T) {
 	if len(matches) != 1 {
 		t.Errorf("Expected to have 1 match in the repository, got %d", len(matches))
 	}
-}
 
-func TestNewRepositoryIsEmpty(t *testing.T) {
-	repo := newInMemoryRepository()
-
-	matches := repo.getMatches()
 	if matches[0].PlayerBlack != "bob" {
 		t.Errorf("Player 1's name should have been bob, got %s", matches[0].PlayerBlack)
 	}
@@ -32,4 +27,12 @@ func TestNewRepositoryIsEmpty(t *testing.T) {
 		t.Errorf("Player 2's name should have been alfred, got %s", matches[0].PlayerWhite)
 	}
 }
-  
+
+func TestNewRepositoryIsEmpty(t *testing.T) {
+	repo := newInMemoryRepository()
+
+	matches := repo.getMatches()
+	if len(matches) != 0 {
+		t.Errorf("Expected to have 0 matches in newly created repository, got %d", len(matches))
+	}
+}

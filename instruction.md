@@ -68,18 +68,8 @@ play. Per standard Go rules, **black** plays first.
                 "started_at": "2015-08-05T08:40:51.620Z",
                 "gridsize" : 19,
                 "turn" : 0,
-                "players" : [
-                    {
-                        "color" : "white",
-                        "name" : "bob",
-                        "score" : 10
-                    },
-                    {
-                        "color" : "black",
-                        "name" : "alfred",
-                        "score" : 22
-                    }
-                ]
+                "playerBlack" : "alfred",
+                "playerWhite" : "bob"
                 
             }
 

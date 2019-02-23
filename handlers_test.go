@@ -70,12 +70,7 @@ func TestCreateMatch(t *testing.T) {
 	if err != nil {
 		t.Errorf("Could not unmarshal payload into newMatchResponse object")
 	}
-
-	// if matchResponse.ID == "" || !strings.Contains(loc[0], matchResponse.ID) {
-	// 	t.Error("matchResponse.Id does not match Location header")
-	// }
-
-	// After creating a match, match repository should have 1 item in it.
+	
 	matches := repo.getMatches()
 	if len(matches) != 1 {
 		t.Errorf("Expected a match repo of 1 match, got size %d", len(matches))

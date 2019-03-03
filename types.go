@@ -14,6 +14,7 @@ type newMatchRequest struct {
 	GridSize    int    `json:"gridsize"`
 	PlayerWhite string `json:"playerWhite"`
 	PlayerBlack string `json:"playerBlack"`
+	Turn        int    `json:"turn,omitempty"`
 }
 
 type matchRepository interface {

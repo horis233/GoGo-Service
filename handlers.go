@@ -31,3 +31,15 @@ func createMatchHandler(formatter *render.Render, repo matchRepository) http.Han
 		w.Header().Add("Location", "/matches/"+guid.String())
 		formatter.JSON(w, http.StatusCreated, &newMatchResponse{ID: newMatch.ID, GridSize: newMatch.GridSize, PlayerBlack: newMatchRequest.PlayerBlack, PlayerWhite: newMatchRequest.PlayerWhite})	}
 }
+
+func getMatchListHandler(formatter *render.Render, repo matchRepository) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		repoMatches := repo.getMatches()
+		matches := make([]newMatchResponse, len(repoMatches))
+		for idx, match := range repoMatches {
+			matches[idx] = newMatchResponse{ID: match.ID, GridSize: match.GridSize, PlayerBlack: match.PlayerBlack, PlayerWhite: match.PlayerWhite}
+		}
+		formatter.JSON(w, http.StatusOK, matches)
+	}
+}
+  

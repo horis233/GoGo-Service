@@ -17,9 +17,15 @@ type newMatchRequest struct {
 	Turn        int    `json:"turn,omitempty"`
 }
 
+type matchDetailsResponse struct {
+	newMatchResponse
+	GameBoard [][]byte `json:"gameboard"`
+}
+
 type matchRepository interface {
 	addMatch(match gogo.Match) (err error)
 	getMatches() []gogo.Match
+	getMatch(id string) (match gogo.Match, err error)
 }
 
 func (request newMatchRequest) isValid() (valid bool) {

@@ -61,6 +61,7 @@ func TestCreateMatchRespondsToBadData(t *testing.T) {
 		t.Error("Sending valid JSON but with incorrect or missing fields should result in a bad request and didn't.")
 	}
 }
+
 func TestCreateMatch(t *testing.T) {
 	client := &http.Client{}
 	repo := newInMemoryRepository()
@@ -109,6 +110,11 @@ func TestCreateMatch(t *testing.T) {
 		t.Errorf("Could not unmarshal payload into newMatchResponse object")
 	}
 
+	if matchResponse.ID == "" || !strings.Contains(loc[0], matchResponse.ID) {
+		t.Error("matchResponse.Id does not match Location header")
+	}
+
+	// After creating a match, match repository should have 1 item in it.
 	matches := repo.getMatches()
 	if len(matches) != 1 {
 		t.Errorf("Expected a match repo of 1 match, got size %d", len(matches))
@@ -122,7 +128,8 @@ func TestCreateMatch(t *testing.T) {
 
 	if match.PlayerWhite != "bob" {
 		t.Errorf("Repository match, white player should be bob, got %s", match.PlayerWhite)
-	} 
+	}
+
 	if matchResponse.PlayerWhite != "bob" {
 		t.Errorf("Expected white player to be bob, got %s", matchResponse.PlayerWhite)
 	}
@@ -211,22 +218,13 @@ func TestGetMatchListReturnsWhatsInRepository(t *testing.T) {
 }
 
 func TestGetMatchDetailsReturns404ForNonexistentMatch(t *testing.T) {
-	// TODO implement
 	var (
-		server   *negroni.Negroni
 		request  *http.Request
 		recorder *httptest.ResponseRecorder
 	)
 
-	formatter := render.New(render.Options{
-		IndentJSON: true,
-	})
-
-	server = negroni.Classic()
-	mx := mux.NewRouter()
 	repo := newInMemoryRepository()
-	initRoutes(mx, formatter, repo)
-	server.UseHandler(mx)
+	server := MakeTestServer(repo)
 	recorder = httptest.NewRecorder()
 	request, _ = http.NewRequest("GET", "/matches/1234", nil)
 	server.ServeHTTP(recorder, request)
@@ -234,28 +232,20 @@ func TestGetMatchDetailsReturns404ForNonexistentMatch(t *testing.T) {
 	if recorder.Code != http.StatusNotFound {
 		t.Errorf("Expected %v; received %v", http.StatusNotFound, recorder.Code)
 	}
-
 }
 
 func TestGetMatchDetailsReturns200ForExistingMatch(t *testing.T) {
 	var (
-		server   *negroni.Negroni
 		request  *http.Request
 		recorder *httptest.ResponseRecorder
 	)
 
-	formatter := render.New(render.Options{
-		IndentJSON: true,
-	})
-
-	server = negroni.Classic()
-	mx := mux.NewRouter()
 	repo := newInMemoryRepository()
+	server := MakeTestServer(repo)
+
 	targetMatch := gogo.NewMatch(19, "black", "white")
 	repo.addMatch(targetMatch)
 	targetMatchID := targetMatch.ID
-	initRoutes(mx, formatter, repo)
-	server.UseHandler(mx)
 
 	recorder = httptest.NewRecorder()
 	request, _ = http.NewRequest("GET", "/matches/"+targetMatchID, nil)
@@ -265,4 +255,11 @@ func TestGetMatchDetailsReturns200ForExistingMatch(t *testing.T) {
 		t.Errorf("Expected %v; received %v", http.StatusOK, recorder.Code)
 	}
 }
-  
+
+func MakeTestServer(repository matchRepository) *negroni.Negroni {
+	server := negroni.Classic()
+	mx := mux.NewRouter()
+	initRoutes(mx, formatter, repository)
+	server.UseHandler(mx)
+	return server
+}

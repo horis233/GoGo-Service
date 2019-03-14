@@ -2,12 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
-	"github.com/google/uuid"
-	
 	"github.com/cloudnativego/gogo-engine"
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
@@ -27,11 +24,13 @@ func createMatchHandler(formatter *render.Render, repo matchRepository) http.Han
 			formatter.Text(w, http.StatusBadRequest, "Invalid new match request")
 			return
 		}
+
 		newMatch := gogo.NewMatch(newMatchRequest.GridSize, newMatchRequest.PlayerBlack, newMatchRequest.PlayerWhite)
 		repo.addMatch(newMatch)
-		guid := uuid.New()
-		w.Header().Add("Location", "/matches/"+guid.String())
-		formatter.JSON(w, http.StatusCreated, &newMatchResponse{ID: newMatch.ID, GridSize: newMatch.GridSize, PlayerBlack: newMatchRequest.PlayerBlack, PlayerWhite: newMatchRequest.PlayerWhite})	}
+		w.Header().Add("Location", "/matches/"+newMatch.ID)
+		formatter.JSON(w, http.StatusCreated, &newMatchResponse{ID: newMatch.ID, GridSize: newMatch.GridSize,
+			PlayerBlack: newMatchRequest.PlayerBlack, PlayerWhite: newMatchRequest.PlayerWhite})
+	}
 }
 
 func getMatchListHandler(formatter *render.Render, repo matchRepository) http.HandlerFunc {
@@ -44,17 +43,30 @@ func getMatchListHandler(formatter *render.Render, repo matchRepository) http.Ha
 		formatter.JSON(w, http.StatusOK, matches)
 	}
 }
-  
+
 func getMatchDetailsHandler(formatter *render.Render, repo matchRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		vars := mux.Vars(req)
 		matchID := vars["id"]
-		fmt.Printf("Fetching match details for match (%s)\n", matchID)
-		_, err := repo.getMatch(matchID)
+		match, err := repo.getMatch(matchID)
 		if err != nil {
 			formatter.JSON(w, http.StatusNotFound, err.Error())
 		} else {
-			formatter.JSON(w, http.StatusOK, matchDetailsResponse{})
+			formatter.JSON(w, http.StatusOK, matchDetailsResponse{ID: matchID, GameBoard: match.GameBoard.Positions})
+		}
+	}
+}
+
+func addMoveHandler(formatter *render.Render, repo matchRepository) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		matchID := vars["id"]
+		match, err := repo.getMatch(matchID)
+		if err != nil {
+			formatter.JSON(w, http.StatusNotFound, err.Error())
+		} else {
+			match.GameBoard.Positions[3][10] = gogo.PlayerWhite
+			formatter.JSON(w, http.StatusCreated, matchDetailsResponse{ID: matchID, GameBoard: match.GameBoard.Positions})
 		}
 	}
 }

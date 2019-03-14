@@ -42,7 +42,7 @@ build:
     - script:
         name: go test
         code: |
-          go test ./...
+          godep go test -v ./...
 deploy:
  steps:
    - internal/docker-push:

@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://gogame.apiblueprint.org/
+HOST: http://gogo.local.micropcf.io/
 
 # Go Game
 
@@ -24,21 +24,11 @@ Lists all currently active matches on the server.
         [
             {
                 "id" : "5a003b78-409e-4452-b456-a6f0dcee05bd",
-                "started_at": "2015-08-05T08:40:51.620Z",
+                "started_at": 13231239123391,
                 "turn" : 27,
                 "gridsize" : 19,
-                "players" : [
-                    {
-                        "color" : "white",
-                        "name" : "bob",
-                        "score" : 10,
-                    },
-                    {
-                        "color" : "black",
-                        "name" : "alfred",
-                        "score" : 22,
-                    }
-                ]
+                "playerWhite" : "bob",
+                "playerBlack" : "alfred"
             }
         ]
 
@@ -65,12 +55,10 @@ play. Per standard Go rules, **black** plays first.
 
             {
                 "id" : "5a003b78-409e-4452-b456-a6f0dcee05bd",
-                "started_at": "2015-08-05T08:40:51.620Z",
+                "started_at": 13231239123391,
                 "gridsize" : 19,
-                "turn" : 0,
                 "playerBlack" : "alfred",
                 "playerWhite" : "bob"
-                
             }
 
 ## Match Status [/matches/{match_id}]
@@ -90,21 +78,11 @@ Query the details of an ongoing match.
 
         {
             "id" : "5a003b78-409e-4452-b456-a6f0dcee05bd",
-            "started_at": "2015-08-05T08:40:51.620Z",
+            "started_at": 13231239123391,
             "gridsize" : 6,
             "turn" : 0,
-            "players" : [
-                {
-                    "color" : "white",
-                    "name" : "bob",
-                    "score" : 10
-                },
-                {
-                    "color" : "black",
-                    "name" : "alfred",
-                    "score" : 22
-                }
-            ],
+            "playerWhite" : "bob",
+            "playerBlack" : "alice",
             "gameboard": [
                 [ 0, 0, 0, 0, 0, 0],
                 [ 0, 1, 2, 0, 0, 0],
@@ -215,14 +193,34 @@ Leaving the **position** field empty indicates a pass.
 + Request (application/json)
 
         {
-            "player" : "white",
+            "player" : 2,
             "position" : { "x" : 3, "y" : 10 }
         }
         
-+ Response 200 (application/json)
++ Response 201 (application/json)
+
+         {
+                "id" : "5a003b78-409e-4452-b456-a6f0dcee05bd",
+                "started_at": 13231239123391,
+                "gridsize" : 6,
+                "turn" : 0,
+                "playerWhite" : "bob",
+                "playerBlack" : "alice",
+                "gameboard": [
+                    [ 0, 0, 0, 0, 0, 0],
+                    [ 0, 1, 2, 0, 0, 0],
+                    [ 0, 1, 2, 0, 1, 2],
+                    [ 0, 0, 0, 0, 0, 0],
+                    [ 0, 0, 0, 0, 0, 0],
+                    [ 0, 0, 0, 0, 0, 0]
+                ]
+            }
         
 + Response 400 (application/json)
 
         {
             "message" : "Invalid move"
         }
+
+
++ Response 404

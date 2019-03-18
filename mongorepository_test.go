@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudnativego/gogo-engine"
-	"github.com/cloudnativego/gogo-service/fakes"
+	"github.com/horis233/gogo-service/fakes"
 	"github.com/pivotal-pez/cfmgo"
 )
 

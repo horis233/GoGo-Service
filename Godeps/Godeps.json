@@ -1,35 +1,84 @@
 {
-	"ImportPath": "github.com/cloudnativego/gogo-service",
-	"GoVersion": "go1.5.1",
-	"Packages": [
-		"./..."
-	],
+	"ImportPath": "github.com/horis233/gogo-service",
+	"GoVersion": "go1.12",
+	"GodepVersion": "v80",
 	"Deps": [
 		{
-			"ImportPath": "code.google.com/p/go-uuid/uuid",
-			"Comment": "null-15",
-			"Rev": "35bc42037350f0078e3c974c6ea690f1926603ab"
+			"ImportPath": "github.com/cloudfoundry-community/go-cfenv",
+			"Comment": "v1.17.0-2-gdd6b21a",
+			"Rev": "dd6b21aad7ac4c201b643e4e5e5b1a97a6e638a1"
 		},
 		{
 			"ImportPath": "github.com/cloudnativego/gogo-engine",
-			"Rev": "a5709f04973a8ee5f4faf7a70127b5e2e0fbfb6c"
+			"Rev": "256cb157fb61886eada3c2ec613fbb4428f5ca3f"
 		},
 		{
 			"ImportPath": "github.com/codegangsta/negroni",
-			"Comment": "v0.1-70-gc7477ad",
-			"Rev": "c7477ad8e330bef55bf1ebe300cf8aa67c492d1b"
+			"Comment": "v1.0.0-26-g390728d",
+			"Rev": "390728d3c6ab037195ad3ac12daaa0304b0e681a"
 		},
 		{
-			"ImportPath": "github.com/gorilla/context",
-			"Rev": "215affda49addc4c8ef7e2534915df2c8c35c6cd"
+			"ImportPath": "github.com/google/uuid",
+			"Comment": "v1.1.0",
+			"Rev": "9b3b1e0f5f99ae461456d768e7d301a7acdaa2d8"
 		},
 		{
 			"ImportPath": "github.com/gorilla/mux",
-			"Rev": "ee1815431e497d3850809578c93ab6705f1a19f7"
+			"Comment": "v1.7.0-1-g8559a4f",
+			"Rev": "8559a4f775fc329165fe32bd4c2543de8ada8fce"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/mapstructure",
+			"Comment": "v1.1.2",
+			"Rev": "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
+		},
+		{
+			"ImportPath": "github.com/pborman/uuid",
+			"Comment": "v1.2.0",
+			"Rev": "8b1b92947f46224e3b97bb1a3a5b0382be00d31e"
+		},
+		{
+			"ImportPath": "github.com/pivotal-pez/cfmgo",
+			"Rev": "a3ef2b434afe8559f4e392c799a6066d8585230d"
+		},
+		{
+			"ImportPath": "github.com/pivotal-pez/cfmgo/params",
+			"Rev": "a3ef2b434afe8559f4e392c799a6066d8585230d"
 		},
 		{
 			"ImportPath": "github.com/unrolled/render",
-			"Rev": "c442bc30e10d9a5ad49f2837d5e175de0bd0a52a"
+			"Comment": "v1.0.0",
+			"Rev": "449f3985007486f7f42ca7f62b4c8b45d6d89cbf"
+		},
+		{
+			"ImportPath": "github.com/urfave/negroni",
+			"Comment": "v1.0.0-26-g390728d",
+			"Rev": "390728d3c6ab037195ad3ac12daaa0304b0e681a"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2",
+			"Comment": "r2016.08.01-7-g9856a29",
+			"Rev": "9856a29383ce1c59f308dd1cf0363a79b5bef6b5"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2/bson",
+			"Comment": "r2016.08.01-7-g9856a29",
+			"Rev": "9856a29383ce1c59f308dd1cf0363a79b5bef6b5"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2/internal/json",
+			"Comment": "r2016.08.01-7-g9856a29",
+			"Rev": "9856a29383ce1c59f308dd1cf0363a79b5bef6b5"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2/internal/sasl",
+			"Comment": "r2016.08.01-7-g9856a29",
+			"Rev": "9856a29383ce1c59f308dd1cf0363a79b5bef6b5"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2/internal/scram",
+			"Comment": "r2016.08.01-7-g9856a29",
+			"Rev": "9856a29383ce1c59f308dd1cf0363a79b5bef6b5"
 		}
 	]
 }

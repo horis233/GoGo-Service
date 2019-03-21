@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/horis233/GoGo-Service"
+	. "github.com/horis233/gogo-service"
 )
 
 /*

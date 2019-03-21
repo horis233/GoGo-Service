@@ -52,6 +52,6 @@ deploy:
        password: $PASSWORD
        cmd: /pipeline/source/gogo-service
        port: "8080"
-       tag: v1
-       repository: cloudnativego/gogo-service
+       tag: latest
+       repository: horis233/gogo-service
        registry: https://registry.hub.docker.com

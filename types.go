@@ -11,6 +11,15 @@ type newMatchResponse struct {
 	Turn        int    `json:"turn,omitempty"`
 }
 
+func (m *newMatchResponse) parse(match gogo.Match) {
+	m.ID = match.ID
+	m.StartedAt = match.StartTime.Unix()
+	m.GridSize = match.GridSize
+	m.PlayerWhite = match.PlayerWhite
+	m.PlayerBlack = match.PlayerBlack
+	m.Turn = match.TurnCount
+}
+
 type matchDetailsResponse struct {
 	ID          string   `json:"id"`
 	StartedAt   int64    `json:"started_at"`
@@ -19,6 +28,16 @@ type matchDetailsResponse struct {
 	PlayerBlack string   `json:"playerBlack"`
 	Turn        int      `json:"turn,omitempty"`
 	GameBoard   [][]byte `json:"gameboard"`
+}
+
+func (m *matchDetailsResponse) parse(match gogo.Match) {
+	m.ID = match.ID
+	m.StartedAt = match.StartTime.Unix()
+	m.GridSize = match.GridSize
+	m.PlayerWhite = match.PlayerWhite
+	m.PlayerBlack = match.PlayerBlack
+	m.Turn = match.TurnCount
+	m.GameBoard = match.GameBoard.Positions
 }
 
 type newMatchRequest struct {
@@ -39,8 +58,9 @@ type newMoveRequest struct {
 
 type matchRepository interface {
 	addMatch(match gogo.Match) (err error)
-	getMatches() []gogo.Match
+	getMatches() (matches []gogo.Match, err error)
 	getMatch(id string) (match gogo.Match, err error)
+	updateMatch(id string, match gogo.Match) (err error)
 }
 
 func (request newMatchRequest) isValid() (valid bool) {

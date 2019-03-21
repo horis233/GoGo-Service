@@ -1,48 +1,50 @@
-# This references the default golang container from
-# the Docker Hub: https://registry.hub.docker.com/u/library/golang/
-# If you want Google's container you would reference google/golang
-# Read more about containers on our dev center
-# https://devcenter.wercker.com/overview-and-core-concepts/containers/
 box: golang
-# This is the build pipeline. Pipelines are the core of wercker
-# Read more about pipelines on our dev center
-# https://devcenter.wercker.com/development/pipelines/
 
-# You can also use services such as databases. Read more on our dev center:
-# https://devcenter.wercker.com/administration/services/
-# services:
-    # - postgres
-    # https://devcenter.wercker.com/administration/services/examples/postgresql/
+services:
+  - mongo
 
-    # - mongo
-    # https://devcenter.wercker.com/administration/services/examples/mongodb/
 build:
-  # The steps that will be executed on build
-  # Steps make up the actions in your pipeline
-  # Read more about steps on our dev center:
-  # https://devcenter.wercker.com/development/steps/
+
   steps:
-    # Sets the go workspace and places you package
-    # at the right place in the workspace tree
     - setup-go-workspace
 
-    # Gets the dependencies
     - script:
         name: go get
         code: |
-          go get
+          cd $WERCKER_SOURCE_DIR
+          go version
+          go get -u github.com/tools/godep
+          go get -u github.com/cloudnativego/cf-tools/vcapinate
+          export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
 
     # Build the project
     - script:
         name: go build
         code: |
-          go build ./...
+          godep go build
+
+    - script:
+        name: env
+        code: env
 
     # Test the project
     - script:
         name: go test
         code: |
           godep go test -v ./...
+
+    - script:
+        name: integration tests
+        code: |
+          export VCAP_SERVICES=`vcapinate -path=./integrations/vcap.yml`
+          export VCAP_APPLICATION={}
+          godep go test ./integrations/_test -v -race
+
+    - script:
+        name: copy files to wercker output
+        code: |
+          cp -R ./ ${WERCKER_OUTPUT_DIR}
+
 deploy:
  steps:
    - internal/docker-push:
@@ -50,6 +52,6 @@ deploy:
        password: $PASSWORD
        cmd: /pipeline/source/gogo-service
        port: "8080"
-       tag: latest
-       repository: horis233/gogo-service
+       tag: v1
+       repository: cloudnativego/gogo-service
        registry: https://registry.hub.docker.com

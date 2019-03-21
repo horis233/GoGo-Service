@@ -116,7 +116,10 @@ func TestCreateMatch(t *testing.T) {
 	}
 
 	// After creating a match, match repository should have 1 item in it.
-	matches := repo.getMatches()
+	matches, err := repo.getMatches()
+	if err != nil {
+		t.Errorf("Unexpected error in getMatches(): %s", err)
+	}
 	if len(matches) != 1 {
 		t.Errorf("Expected a match repo of 1 match, got size %d", len(matches))
 	}
@@ -200,7 +203,10 @@ func TestGetMatchListReturnsWhatsInRepository(t *testing.T) {
 		t.Errorf("Could not unmarshal payload into []newMatchResponse slice")
 	}
 
-	repoMatches := repo.getMatches()
+	repoMatches, err := repo.getMatches()
+	if err != nil {
+		t.Errorf("Unexpected error in getMatches(): %s", err)
+	}
 	if len(matchList) != len(repoMatches) {
 		t.Errorf("Match response size should have equaled repo size, sizes were: %d and %d", len(matchList), len(repoMatches))
 	}
@@ -235,7 +241,7 @@ func TestGetMatchDetailsReturns404ForNonexistentMatch(t *testing.T) {
 	}
 }
 
-func TestGetMatchDetailsReturns200ForExistingMatch(t *testing.T) {
+func TestGetMatchDetailsReturnsExistingMatch(t *testing.T) {
 	var (
 		request  *http.Request
 		recorder *httptest.ResponseRecorder
@@ -254,6 +260,15 @@ func TestGetMatchDetailsReturns200ForExistingMatch(t *testing.T) {
 
 	if recorder.Code != http.StatusOK {
 		t.Errorf("Expected %v; received %v", http.StatusOK, recorder.Code)
+	}
+
+	var match matchDetailsResponse
+	err := json.Unmarshal(recorder.Body.Bytes(), &match)
+	if err != nil {
+		t.Errorf("Error unmarshaling match details: %s", err)
+	}
+	if match.GridSize != 19 {
+		t.Errorf("Expected match gridsize to be 19; received %d", match.GridSize)
 	}
 }
 
@@ -276,6 +291,7 @@ func TestCannotMakeMoveOnNonExistentgame(t *testing.T) {
 		t.Errorf("Should have returned a 404 for a missing match, but got %d instead.", recorder.Code)
 	}
 }
+
 func TestAddMoveIsReflectedInGameBoard(t *testing.T) {
 	var (
 		request  *http.Request
@@ -337,7 +353,6 @@ func TestAddMoveIsReflectedInGameBoard(t *testing.T) {
 	if matchDetails2.GameBoard[8][8] != gogo.PlayerBlack {
 		t.Errorf("Added move should belong to black at 8,8 - belongs to %d", matchDetails2.GameBoard[8][8])
 	}
-
 }
 
 func MakeTestServer(repository matchRepository) *negroni.Negroni {

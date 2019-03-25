@@ -11,7 +11,7 @@ build:
     - script:
         name: disable vendoring
         code: |
-          export GO15VENDOREXPERIMENT=0
+          export GO15VENDOREXPERIMENT=1
 
     - script:
         name: go get

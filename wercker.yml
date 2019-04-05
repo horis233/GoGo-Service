@@ -37,8 +37,7 @@ build:
     - script:
         name: go test
         code: |
-          go test -v ./...
-
+          go test -v ./service $(glide novendor)
     - script:
         name: copy files to wercker output
         code: |

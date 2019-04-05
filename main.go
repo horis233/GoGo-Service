@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	service "github.com/horis233/GoGo-Service/service"
 	"github.com/cloudfoundry-community/go-cfenv"
 )
 
@@ -13,6 +14,6 @@ func main() {
 	}
 
 	appEnv, _ := cfenv.Current()
-	server := NewServer(appEnv)
+	server := service.NewServer(appEnv)
 	server.Run(":" + port)
 }

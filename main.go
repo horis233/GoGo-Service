@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	service "github.com/horis233/GoGo-Service/service"
@@ -13,7 +14,11 @@ func main() {
 		port = "3000"
 	}
 
-	appEnv, _ := cfenv.Current()
+	appEnv, err := cfenv.Current()
+	if err != nil {
+		fmt.Println("CF Environment not detected.")
+	}
+	
 	server := service.NewServer(appEnv)
 	server.Run(":" + port)
 }
